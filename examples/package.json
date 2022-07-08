@@ -1,0 +1,11 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node run.js"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.3.1"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "package-tool-webpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib",
+  "scripts": {
+    "build": "rimraf -rf lib esm dist && npm run build:cjs",
+    "build:cjs": "tsc --project tsconfig.build.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cuikangjie/package-tool-webpack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cuikangjie/package-tool-webpack/issues"
+  },
+  "homepage": "https://github.com/cuikangjie/package-tool-webpack#readme",
+  "dependencies": {
+    "ora": "5",
+    "ts-node": "^10.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.4",
+    "webpack": "^5.73.0"
+  }
+}
