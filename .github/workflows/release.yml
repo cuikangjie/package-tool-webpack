@@ -19,13 +19,13 @@ jobs:
       - run: npm run build
 
       - if: contains(github.event.head_commit.message, 'major')
-        run: npm run major
+        run: npm version major
 
       - if: contains(github.event.head_commit.message, 'minor')
-        run: npm run minor
+        run: npm version minor
 
       - if: ${{!contains(github.event.head_commit.message, 'major') && !contains(github.event.head_commit.message, 'minor')}}
-        run: npm run patch
+        run: npm version patch
 
       - id: publish
         uses: JS-DevTools/npm-publish@v1
