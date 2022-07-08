@@ -18,6 +18,6 @@ jobs:
       - run: npm install
       - run: npm run build
 
-      - run: npm publish
-        env:
-          NOOD_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
