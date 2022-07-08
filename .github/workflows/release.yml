@@ -18,6 +18,15 @@ jobs:
       - run: npm install
       - run: npm run build
 
+      - if: contains(github.event.head_commit.message, 'major')
+        run: npm run major
+
+      - if: contains(github.event.head_commit.message, 'minor')
+        run: npm run minor
+
+      - if: ${{!contains(github.event.head_commit.message, 'major') && !contains(github.event.head_commit.message, 'minor')}}
+        run: npm run patch
+
       - id: publish
         uses: JS-DevTools/npm-publish@v1
         with:
@@ -26,3 +35,15 @@ jobs:
       - if: steps.publish.outputs.type != 'none'
         run: |
           echo "Version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"
+
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "update version ${{ steps.publish.outputs.version }}" -a
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
