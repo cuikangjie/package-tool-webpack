@@ -15,17 +15,29 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
+
+      - name: Git Config
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
       - run: npm install
       - run: npm run build
 
       - if: contains(github.event.head_commit.message, 'major')
         run: npm version major
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - if: contains(github.event.head_commit.message, 'minor')
         run: npm version minor
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - if: ${{!contains(github.event.head_commit.message, 'major') && !contains(github.event.head_commit.message, 'minor')}}
         run: npm version patch
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - id: publish
         uses: JS-DevTools/npm-publish@v1
@@ -38,8 +50,6 @@ jobs:
 
       - name: Commit files
         run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
           git commit -m "update version ${{ steps.publish.outputs.version }}" -a
 
       - name: Push changes
