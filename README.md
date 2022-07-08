@@ -1,3 +1,3 @@
 # package-tool-webpack
 
-publist
+publish
