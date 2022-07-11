@@ -1,2 +1,5 @@
 src/
 examples
+.github
+tsconfig.json
+tsconfig.build.json

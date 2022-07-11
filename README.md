@@ -1,3 +1,11 @@
 # package-tool-webpack
 
-publish1
+```js
+const tool = require("@package-tool/webpack");
+
+// watch
+tool.run(webpackConfig, callback);
+
+// build  run once
+tool.build(webpackConfig, callback);
+```
