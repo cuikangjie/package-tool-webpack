@@ -3,9 +3,9 @@
 ```js
 const tool = require("@package-tool/webpack");
 
-// watch
+//webpack watch
 tool.run(webpackConfig, callback);
 
-// build  run once
+// build
 tool.build(webpackConfig, callback);
 ```
