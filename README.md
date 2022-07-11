@@ -3,7 +3,7 @@
 ```js
 const tool = require("@package-tool/webpack");
 
-//webpack watch
+// watch
 tool.run(webpackConfig, callback);
 
 // build
