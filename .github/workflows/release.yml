@@ -23,6 +23,8 @@ jobs:
 
       - run: npm install
       - run: npm run build
+      
+      - run: git status
 
       - if: contains(github.event.head_commit.message, 'major')
         run: npm version major
