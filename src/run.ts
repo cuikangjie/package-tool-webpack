@@ -4,7 +4,7 @@ import ora from "ora";
 
 import { error, logger } from "./util";
 
-export const run = (config, callBack, compilerOptions?) => {
+export const run = (config, callBack) => {
   if (!config) {
     throw new Error(`Configuration is required`);
 
@@ -16,30 +16,31 @@ export const run = (config, callBack, compilerOptions?) => {
 
   spinner.start("编译中...");
 
-  const compiler = webpack(config, (err: any, stats) => {
-    if (err) {
-      spinner.fail(`编译失败~ `);
-
-      console.error(err.stack || err);
-      if (err.details) {
-        console.error(err.details);
-      }
-
-      callBack && callBack(true);
-      return;
-    }
-  });
-
   const options = {
     aggregateTimeout: 1000, // 延迟
     ignored: /node_modules/,
-    // pool: 1000, // 轮询
     "info-verbosity": "verbose",
-    ...(compilerOptions || {}),
   };
 
+  const compiler = webpack(
+    { watch: true, watchOptions: options, ...config },
+    (err: any, stats) => {
+      if (err) {
+        spinner.fail(`编译失败~ `);
+
+        console.error(err.stack || err);
+        if (err.details) {
+          console.error(err.details);
+        }
+
+        callBack && callBack(true);
+        return;
+      }
+    }
+  );
+
   if (compiler) {
-    compiler.watch(options, () => {});
+    // compiler.watch(options, () => {});
 
     compiler.hooks.watchRun.tap("server", () => {
       spinner.start("重新编译中...");

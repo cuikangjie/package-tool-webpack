@@ -30,7 +30,7 @@ export const build = (config, callBack) => {
   });
 
   if (compiler) {
-    compiler.run(() => {});
+    // compiler.run(() => {});
 
     compiler.hooks.done.tap("server", (stats) => {
       if (stats.hasErrors()) {
