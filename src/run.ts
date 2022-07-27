@@ -16,7 +16,15 @@ export const run = (config, callBack, compilerOptions?) => {
 
   spinner.start("编译中...");
 
-  const compiler = webpack(config);
+  const compiler = webpack(config, (err: any, stats) => {
+    if (err) {
+      console.error(err.stack || err);
+      if (err.details) {
+        console.error(err.details);
+      }
+      return;
+    }
+  });
 
   const options = {
     aggregateTimeout: 1000, // 延迟

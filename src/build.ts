@@ -15,7 +15,15 @@ export const build = (config, callBack) => {
 
   spinner.start("编译中...");
 
-  const compiler = webpack(config);
+  const compiler = webpack(config, (err: any, stats) => {
+    if (err) {
+      console.error(err.stack || err);
+      if (err.details) {
+        console.error(err.details);
+      }
+      return;
+    }
+  });
 
   compiler.run(() => {});
 
