@@ -19,7 +19,6 @@ export const run = (config, callBack) => {
   const options = {
     aggregateTimeout: 1000, // 延迟
     ignored: /node_modules/,
-    "info-verbosity": "verbose",
   };
 
   const compiler = webpack(
