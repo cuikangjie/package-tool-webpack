@@ -2,7 +2,7 @@ import webpack from "webpack";
 
 import ora from "ora";
 
-import { error } from "./util";
+import { error, logger } from "./util";
 
 export const run = (config, callBack, compilerOptions?) => {
   if (!config) {
@@ -18,10 +18,14 @@ export const run = (config, callBack, compilerOptions?) => {
 
   const compiler = webpack(config, (err: any, stats) => {
     if (err) {
+      spinner.fail(`编译失败~ `);
+
       console.error(err.stack || err);
       if (err.details) {
         console.error(err.details);
       }
+
+      callBack && callBack(true);
       return;
     }
   });
@@ -34,27 +38,29 @@ export const run = (config, callBack, compilerOptions?) => {
     ...(compilerOptions || {}),
   };
 
-  compiler.watch(options, () => {});
+  if (compiler) {
+    compiler.watch(options, () => {});
 
-  compiler.hooks.watchRun.tap("server", () => {
-    spinner.start("重新编译中...");
-  });
+    compiler.hooks.watchRun.tap("server", () => {
+      spinner.start("重新编译中...");
+    });
 
-  compiler.hooks.done.tap("server", (stats) => {
-    if (stats.hasErrors()) {
-      spinner.fail(`编译失败~ `);
+    compiler.hooks.done.tap("server", (stats) => {
+      if (stats.hasErrors()) {
+        spinner.fail(`编译失败~ `);
 
-      error(stats);
+        error(stats);
 
-      callBack && callBack(true);
+        callBack && callBack(true);
 
-      return;
-    }
+        return;
+      }
 
-    spinner.succeed(`编译成功~ `);
+      spinner.succeed(`编译成功~ `);
 
-    callBack && callBack();
+      callBack && callBack();
 
-    error(stats);
-  });
+      logger(stats);
+    });
+  }
 };
